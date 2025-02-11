@@ -43,7 +43,11 @@ public class BrandService {
         Optional<Brand> optionalBrand = brandRepository.findById(id);
 
         if (optionalBrand.isEmpty()) {
+<<<<<<< HEAD
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Marca não encontrada.");
+=======
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Categoria não encontrada.");
+>>>>>>> 48088b39bb102aced0f340e51b05629c9bdf4ae2
         }
 
         var brand = optionalBrand.get();
