@@ -34,4 +34,8 @@ public class Category implements Serializable {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
     private Set<Product> products = new HashSet<>();
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
+    private Set<SubCategory> subCategories = new HashSet<>();
 }

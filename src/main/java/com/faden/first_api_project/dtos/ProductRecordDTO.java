@@ -10,9 +10,9 @@ import java.util.UUID;
 // Mapear os campos do JSON
 // Passa os campos dentro dos parênteses que serão recebidos via JSON
 public record ProductRecordDTO(
-        @NotBlank String name,
-        @NotBlank String description,
-        String imageURL,
-        @NotNull UUID brand_id,
-        @NotNull UUID category_id,
-        @NotNull BigDecimal value) {}
+                                @NotBlank String name,
+                                @NotBlank String description,
+                                @NotNull UUID brand_id,
+                                @NotNull UUID category_id,
+                                @NotNull BigDecimal value,
+                                String imageURL) {}
