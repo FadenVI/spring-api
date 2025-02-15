@@ -41,5 +41,8 @@ public class Product implements Serializable {
     @JoinColumn(name = "brand_id") // chave estrangeira
     private Brand brand; //Este campo é passado para o mapeamento da relação
 
+    @ManyToOne
+    @JoinColumn(name = "subCategory_id")
+    private SubCategory subCategory;
 
 }

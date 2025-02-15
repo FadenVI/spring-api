@@ -24,6 +24,7 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.OK).body(productService.getAllProducts());
     }
 
+
     @GetMapping("/product/{id}")
     public ResponseEntity<Object> getProductByID(@PathVariable(value = "id") UUID id) {
         return ResponseEntity.status(HttpStatus.OK).body(productService.getProductByID(id));
@@ -44,6 +45,11 @@ public class ProductController {
     @DeleteMapping("/product/delete/{id}")
     public ResponseEntity<Object> deleteProduct(@PathVariable(value = "id") UUID id) {
         return ResponseEntity.status(HttpStatus.OK).body(productService.deleteProduct(id));
+    }
+
+    @GetMapping("/products/search/{query}")
+    public ResponseEntity<List<Product>> getProductsByName(@PathVariable(value = "query") String query) {
+        return ResponseEntity.status(HttpStatus.OK).body(productService.getAllProductsByName(query));
     }
 
 }

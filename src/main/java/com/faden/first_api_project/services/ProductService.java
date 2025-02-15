@@ -1,12 +1,15 @@
 package com.faden.first_api_project.services;
 
 import com.faden.first_api_project.dtos.ProductRecordDTO;
+import com.faden.first_api_project.exceptions.ProductNotFoundException;
 import com.faden.first_api_project.models.Brand;
 import com.faden.first_api_project.models.Category;
 import com.faden.first_api_project.models.Product;
+import com.faden.first_api_project.models.SubCategory;
 import com.faden.first_api_project.repositories.BrandRepository;
 import com.faden.first_api_project.repositories.CategoryRepository;
 import com.faden.first_api_project.repositories.ProductRepository;
+import com.faden.first_api_project.repositories.SubCategoryRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,6 +33,9 @@ public class ProductService {
     @Autowired
     BrandRepository brandRepository;
 
+    @Autowired
+    SubCategoryRepository subCategoryRepository;
+
     @Transactional
     public Product createProduct(ProductRecordDTO productRecordDto) {
         var product = new Product();
@@ -39,6 +45,10 @@ public class ProductService {
         Category category = categoryRepository.findById(productRecordDto.category_id())
                 .orElseThrow(() -> new RuntimeException("Categoria não encontrada"));
 
+        // Buscar a subcategoria no banco pelo ID recebido no DTO
+        SubCategory subCategory = subCategoryRepository.findById(productRecordDto.subCategory_id())
+                .orElseThrow(() -> new RuntimeException("Subcategoria não encontrada"));
+
         // Buscar a marca no banco pelo ID recebido no DTO
         Brand brand = brandRepository.findById(productRecordDto.brand_id())
                 .orElseThrow(() -> new RuntimeException("Marca não encontrada"));
@@ -46,6 +56,7 @@ public class ProductService {
         // Definir a categoria no produto
         product.setCategory(category);
         product.setBrand(brand);
+        product.setSubCategory(subCategory);
 
         return productRepository.save(product);
 
@@ -55,7 +66,12 @@ public class ProductService {
         return productRepository.findAll();
     }
 
+    public List<Product> getAllProductsByName(String query) {
+        return productRepository.findByNameIgnoreCaseContaining(query);
+    }
+
     // Para reaproveitar essa função em outras, tenho que converter ela para retornar um Product e criar exceções personalizadas
+    /*
     public Object getProductByID(UUID id) {
 
         Optional<Product> productOptional = productRepository.findById(id);
@@ -63,8 +79,14 @@ public class ProductService {
         if (productOptional.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Produto não encontrado");
         }
+    return productOptional.get();
+    }*/
 
-        return productOptional.get();
+
+    public Object getProductByID(UUID id) {
+
+        return productRepository.findById(id).
+                orElseThrow(() -> new ProductNotFoundException("Produto não encontrado."));
     }
 
     public Object updateProduct(UUID id, ProductRecordDTO productRecordDto) {
@@ -82,6 +104,10 @@ public class ProductService {
         Category category = categoryRepository.findById(productRecordDto.category_id())
                 .orElseThrow(() -> new RuntimeException("Categoria não encontrada"));
 
+        // Buscar a subcategoria no banco pelo ID recebido no DTO
+        SubCategory subCategory = subCategoryRepository.findById(productRecordDto.subCategory_id())
+                .orElseThrow(() -> new RuntimeException("Subcategoria não encontrada"));
+
         // Buscar a marca no banco pelo ID recebido no DTO
         Brand brand = brandRepository.findById(productRecordDto.brand_id())
                 .orElseThrow(() -> new RuntimeException("Marca não encontrada"));
@@ -89,6 +115,7 @@ public class ProductService {
         // Definir a categoria no produto
         product.setCategory(category);
         product.setBrand(brand);
+        product.setSubCategory(subCategory);
 
         return productRepository.save(product);
     }

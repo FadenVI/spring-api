@@ -14,5 +14,6 @@ public record ProductRecordDTO(
                                 @NotBlank String description,
                                 @NotNull UUID brand_id,
                                 @NotNull UUID category_id,
+                                @NotNull UUID subCategory_id,
                                 @NotNull BigDecimal value,
                                 String imageURL) {}

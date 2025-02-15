@@ -59,4 +59,38 @@ public class SubCategoryService {
 
         return subCategory.get();
     }
+
+    public Object deleteSubCategory(UUID id) {
+
+        Optional<SubCategory> subCategory = subCategoryRepository.findById(id);
+
+        if (subCategory.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Subcategoria não encontrada");
+        }
+
+        subCategoryRepository.deleteById(id);
+
+        return ResponseEntity.status(HttpStatus.OK).body("Subcategoria " + subCategory.get().getName() + " !deletada com sucesso");
+    }
+
+    public Object updateSubCategory(UUID id, SubCategoryDTO subCategoryDTO) {
+        Optional<SubCategory> subCategoryOptional = subCategoryRepository.findById(id);
+
+        if (subCategoryOptional.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Subcategoria não encontrada");
+        }
+
+        var subCategory = subCategoryOptional.get();
+        BeanUtils.copyProperties(subCategoryDTO, subCategory);
+
+        // Buscar a categoria no banco pelo ID recebido no DTO
+        Category category = categoryRepository.findById(subCategoryDTO.category_id())
+                .orElseThrow(() -> new RuntimeException("Subategoria não encontrada"));
+
+        // Definir a categoria no produto
+        subCategory.setCategory(category);
+
+        return subCategoryRepository.save(subCategory);
+
+    }
 }

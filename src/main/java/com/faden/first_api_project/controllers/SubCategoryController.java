@@ -37,6 +37,20 @@ public class SubCategoryController {
         return ResponseEntity.status(HttpStatus.CREATED).body(subCategoryDTO);
     }
 
+    @PutMapping("/subcategory/update/{id}")
+    public ResponseEntity<SubCategoryDTO> createSubCategory(@PathVariable(value = "id") UUID id, @RequestBody @Valid SubCategoryDTO subCategoryDTO) {
+        var subCategory = subCategoryService.updateSubCategory(id, subCategoryDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(subCategoryDTO);
+    }
+
+    @DeleteMapping("/subcategory/delete/{id}")
+    public ResponseEntity<Object> deleteSubCategory(@PathVariable(value = "id") UUID id) {
+        return ResponseEntity.status(HttpStatus.OK).body(subCategoryService.deleteSubCategory(id));
+    }
+
+
+
+
 
 
 
