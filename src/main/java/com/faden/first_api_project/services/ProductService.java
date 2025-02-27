@@ -12,10 +12,14 @@ import com.faden.first_api_project.repositories.ProductRepository;
 import com.faden.first_api_project.repositories.SubCategoryRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+
 
 import java.util.List;
 import java.util.Optional;
@@ -64,6 +68,10 @@ public class ProductService {
 
     public List<Product> getAllProducts() {
         return productRepository.findAll();
+    }
+
+    public Page<Product> getProductsPagination(int page, int size) {
+        return productRepository.findAll(PageRequest.of(page, size));
     }
 
     public List<Product> getAllProductsByName(String query) {
